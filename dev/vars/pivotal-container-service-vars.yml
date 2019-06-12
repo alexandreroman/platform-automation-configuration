@@ -43,7 +43,7 @@ network-properties:
   service_network:
     name: pks-services
   singleton_availability_zone:
-    name: "((zonen1))"
+    name: "((zone1))"
 
 # resource-config
 resource-config:
