@@ -14,7 +14,7 @@ product-properties:
     cloud_provider: 
       type: GCP
       gcp:
-        project_id: "((pks/product-properties/project_id))"
+        project_id: "((gcp_project_id))"
         network: pcf-gcp-management-subnet
         master_service_account: "((pks/product-properties/master_service_account))"
         worker_service_account: "((pks/product-properties/worker_service_account))"
@@ -22,8 +22,8 @@ product-properties:
     plan1_selector:
       status: "Plan Active"
       active:
-        master_az_placement: ["us-central1-a", "us-central1-b", "us-central1-c"]
-        worker_az_placement: ["us-central1-a", "us-central1-b", "us-central1-c"]
+        master_az_placement: ["((zone1))", "((zone2))", "((zone3))"]
+        worker_az_placement: ["((zone1))", "((zone2))", "((zone3))"]
     plan2_selector:
       status: "Plan Inactive"
     plan3_selector:
@@ -35,13 +35,13 @@ product-properties:
 network-properties:
   network: pcf-gcp-management-subnet
   other_availability_zones:
-  - name: us-central1-a
-  - name: us-central1-b
-  - name: us-central1-c
+  - name: "((zone1))"
+  - name: "((zone2))"
+  - name: "((zone3))"
   service_network:
     name: pks-services
   singleton_availability_zone:
-    name: us-central1-a
+    name: "((zonen1))"
 
 # resource-config
 resource-config:
@@ -55,6 +55,6 @@ resource-config:
 errand-config:
   delete-all-clusters: true
   pks-nsx-t-precheck: false
-  upgrade-all-service-instances: false
+  upgrade-all-service-instances: true
   wavefront-alert-creation: false
   wavefront-alert-deletion: false
