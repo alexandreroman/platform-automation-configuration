@@ -43,7 +43,7 @@ products:
 
   # PKS
   pks:
-    product-version: "1.3.3"
+    product-version: "1.3.4"
     pivnet-product-slug: pivotal-container-service
     pivnet-api-token: ((pivnet_token))
     pivnet-file-glob: "*.pivotal"
