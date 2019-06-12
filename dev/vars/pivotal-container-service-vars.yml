@@ -9,7 +9,9 @@
 
 # product-properties
 product-properties:
-  pks_tls: ((pks/product-properties/pks_tls))
+  pks_tls:
+    certificate: ((pks/product-properties/pks_tls/certificate))
+    private_key: ((pks/product-properties/pks_tls/private_key))
   properties:
     cloud_provider: 
       type: GCP
