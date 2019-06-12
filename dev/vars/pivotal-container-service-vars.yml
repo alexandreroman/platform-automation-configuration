@@ -17,7 +17,7 @@ product-properties:
       type: GCP
       gcp:
         project_id: "((gcp_project_id))"
-        network: pcf-gcp-management-subnet
+        network: ((pcf_subdomain))-pcf-network
         master_service_account: "((pks/product-properties/master_service_account))"
         worker_service_account: "((pks/product-properties/worker_service_account))"
     pks_api_hostname: "((pks/product-properties/pks_api_hostname))"
@@ -35,7 +35,7 @@ product-properties:
 
 # network-properties
 network-properties:
-  network: pcf-gcp-management-subnet
+  network: infrastructure
   other_availability_zones:
   - name: "((zone1))"
   - name: "((zone2))"
@@ -49,7 +49,7 @@ network-properties:
 resource-config:
   pivotal-container-service:
     elb_names:
-    - tcp:pcf-gcp-pks-api
+    - tcp:((pcf_subdomain))-pks-api
 
 # errand-config
 # Note: these become the "static" default settings so make it as less enabled as possible to avoid unnecessary execution
