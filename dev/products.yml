@@ -48,3 +48,4 @@ products:
     pivnet-api-token: ((pivnet_token))
     pivnet-file-glob: "*.pivotal"
     stemcell-iaas: google
+
