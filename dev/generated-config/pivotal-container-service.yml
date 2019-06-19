@@ -4,12 +4,17 @@ product-properties:
     value:
       cert_pem: ((pivotal-container-service_pks_tls.cert_pem))
       private_key_pem: ((pivotal-container-service_pks_tls.private_key_pem))
-  .properties.cloud_provider.azure.azure_cloud_name:
-    value: AzurePublicCloud
-  .properties.cloud_provider.vsphere.vcenter_master_creds:
-    value:
-      identity: ((properties_cloud_provider_vsphere_vcenter_master_creds.identity))
-      password: ((properties_cloud_provider_vsphere_vcenter_master_creds.password))
+  .properties.cloud_provider:
+    selected_option: gcp
+    value: GCP
+  .properties.cloud_provider.gcp.master_service_account:
+    value: gcp-pks-master@pa-aroman.iam.gserviceaccount.com
+  .properties.cloud_provider.gcp.network:
+    value: gcp-pcf-network
+  .properties.cloud_provider.gcp.project_id:
+    value: pa-aroman
+  .properties.cloud_provider.gcp.worker_service_account:
+    value: gcp-pks-worker@pa-aroman.iam.gserviceaccount.com
   .properties.network_selector:
     selected_option: flannel
     value: flannel
@@ -20,6 +25,8 @@ product-properties:
   .properties.pks-vrli:
     selected_option: disabled
     value: disabled
+  .properties.pks_api_hostname:
+    value: api.pks.gcp.alexandreroman.fr
   .properties.plan1_selector:
     selected_option: active
     value: Plan Active
@@ -30,42 +37,30 @@ product-properties:
       recommended for production workloads.'
   .properties.plan1_selector.active.disable_deny_escalating_exec:
     value: false
+  .properties.plan1_selector.active.master_az_placement:
+    value:
+    - europe-west1-b
+    - europe-west1-c
+    - europe-west1-d
   .properties.plan1_selector.active.master_instances:
     value: 1
   .properties.plan1_selector.active.max_worker_instances:
     value: 50
   .properties.plan1_selector.active.name:
     value: small
+  .properties.plan1_selector.active.worker_az_placement:
+    value:
+    - europe-west1-b
+    - europe-west1-c
+    - europe-west1-d
   .properties.plan1_selector.active.worker_instances:
     value: 3
-  .properties.plan2_selector.active.allow_privileged_containers:
-    value: false
-  .properties.plan2_selector.active.description:
-    value: 'Example: This plan will configure a medium sized kubernetes cluster, suitable
-      for more pods.'
-  .properties.plan2_selector.active.disable_deny_escalating_exec:
-    value: false
-  .properties.plan2_selector.active.master_instances:
-    value: 3
-  .properties.plan2_selector.active.max_worker_instances:
-    value: 50
-  .properties.plan2_selector.active.name:
-    value: medium
-  .properties.plan2_selector.active.worker_instances:
-    value: 5
-  .properties.plan3_selector.active.allow_privileged_containers:
-    value: false
-  .properties.plan3_selector.active.description:
-    value: 'Example: This plan will configure a large kubernetes cluster for resource
-      heavy workloads, or a high number of workloads.'
-  .properties.plan3_selector.active.disable_deny_escalating_exec:
-    value: false
-  .properties.plan3_selector.active.master_instances:
-    value: 3
-  .properties.plan3_selector.active.max_worker_instances:
-    value: 50
-  .properties.plan3_selector.active.name:
-    value: large
+  .properties.plan2_selector:
+    selected_option: inactive
+    value: Plan Inactive
+  .properties.plan3_selector:
+    selected_option: inactive
+    value: Plan Inactive
   .properties.proxy_selector:
     selected_option: disabled
     value: Disabled
@@ -75,31 +70,37 @@ product-properties:
   .properties.syslog_selector:
     selected_option: disabled
     value: disabled
-  .properties.telemetry_selector.enabled.billing_polling_interval:
-    value: 60
-  .properties.telemetry_selector.enabled.telemetry_polling_interval:
-    value: 600
-  .properties.telemetry_selector.enabled.telemetry_url:
-    value: https://vcsa.vmware.com
+  .properties.telemetry_selector:
+    selected_option: disabled
+    value: disabled
   .properties.uaa:
     selected_option: internal
     value: internal
   .properties.uaa_oidc:
     value: false
   .properties.uaa_pks_cli_access_token_lifetime:
-    value: 600
+    value: 86400
   .properties.uaa_pks_cli_refresh_token_lifetime:
-    value: 21600
+    value: 172800
+  .properties.vm_extensions:
+    value:
+    - public_ip
   .properties.wavefront:
     selected_option: disabled
     value: disabled
   .properties.worker_max_in_flight:
     value: 1
 network-properties:
-  network: null
-  other_availability_zones: []
-  service_network: null
-  singleton_availability_zone: null
+  network:
+    name: infrastructure
+  other_availability_zones:
+  - name: europe-west1-b
+  - name: europe-west1-c
+  - name: europe-west1-d
+  service_network:
+    name: pks-services
+  singleton_availability_zone:
+    name: europe-west1-b
 resource-config:
   pivotal-container-service:
     instances: automatic
@@ -108,6 +109,8 @@ resource-config:
     instance_type:
       id: automatic
     internet_connected: true
+    elb_names:
+    - tcp:gcp-pks-api
 errand-config:
   delete-all-clusters:
     pre-delete-state: true
